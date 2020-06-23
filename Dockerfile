@@ -1,8 +1,13 @@
 FROM node:12.18.0-buster
 
-COPY package.json /opt/yapper-chat/
-COPY dist/**.js /opt/yapper-chat/
+ENV NODE_ENV production
 
 WORKDIR /opt/yapper-chat/
-CMD npm install
+COPY package.json .
+RUN npm install --no-audit --no-optional
+RUN rm package.json
+
+COPY dist/**.js ./
+
+EXPOSE 3000
 ENTRYPOINT ["node", "main.js"]
