@@ -2,15 +2,15 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { CreateUserInput, User } from './models';
 
-@Resolver(of => User)
-export class UsersResolver {
-//   constructor(
-//     private authorsService: UsersService
-//   ) {}
+import { UserService } from './user.service';
+
+@Resolver(_ => User)
+export class UserResolver {
+    constructor(private readonly userService: UserService) {}
 
     @Query(_ => [User!]!)
-    users(): Array<User> {
-        return [];
+    async users(): Promise<Array<User>> {
+        return await this.userService.getAllUsers();
     }
 
     @Mutation(_ => User)
